@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<addon addon_id="sidaneMemberLikedPosts" title="Member Liked Posts" version_string="1.0" version_id="1" url="" install_callback_class="" install_callback_method="" uninstall_callback_class="" uninstall_callback_method="">
+  <admin_navigation/>
+  <admin_permissions/>
+  <admin_style_properties/>
+  <admin_templates/>
+  <admin_template_modifications/>
+  <code_events/>
+  <code_event_listeners>
+    <listener event_id="load_class_controller" execute_order="10" callback_class="Sidane_MemberLikedPosts_Listener_LoadClassController" callback_method="loadClassController" active="1" hint="" description=""/>
+    <listener event_id="load_class_model" execute_order="10" callback_class="Sidane_MemberLikedPosts_Listener_LoadClassModel" callback_method="loadClassModel" active="1" hint="" description=""/>
+  </code_event_listeners>
+  <cron/>
+  <email_templates/>
+  <email_template_modifications/>
+  <optiongroups/>
+  <permissions>
+    <permission_groups/>
+    <permissions>
+      <permission permission_group_id="general" permission_id="viewMemberLikedPosts" permission_type="flag" default_value="unset" interface_group_id="generalPermissions" display_order="100"/>
+    </permissions>
+    <interface_groups/>
+  </permissions>
+  <phrases>
+    <phrase title="liked_posts" version_id="1" version_string="1.0"><![CDATA[Liked Posts]]></phrase>
+    <phrase title="member_has_no_liked_posts" version_id="1" version_string="1.0"><![CDATA[This member doesn't have any liked posts yet.]]></phrase>
+    <phrase title="permission_general_viewMemberLikedPosts" version_id="1" version_string="1.0"><![CDATA[View member liked posts]]></phrase>
+  </phrases>
+  <route_prefixes/>
+  <style_properties/>
+  <templates>
+    <template title="member_liked_posts" version_id="1" version_string="1.0"><![CDATA[<xen:title>{xen:phrase liked_posts}</xen:title>
+<xen:h1>{xen:phrase liked_posts}</xen:h1>
+
+<xen:require css="events.css" />
+
+<xen:if is="{$likes}">
+	<div class="newsFeed">
+		<ol class="eventList">
+			<xen:foreach loop="$likes" value="$item">
+				<xen:include template="news_feed_item">
+					<xen:set var="$itemTemplate">{xen:raw $item.listTemplate}</xen:set>
+					<xen:set var="$itemDate">{$item.like_date}</xen:set>
+				</xen:include>
+			</xen:foreach>
+		</ol>
+	</div>
+	
+<xen:else />
+	<p>{xen:phrase member_has_no_liked_posts}</p>
+</xen:if>
+]]></template>
+  </templates>
+  <public_template_modifications>
+    <modification template="member_view" modification_key="sidaneMemberLikedPostsTab" description="Add 'Liked Posts' tab to member_view template" execution_order="10" enabled="1" action="str_replace">
+      <find><![CDATA[<li><a href="{$requestPaths.requestUri}#postings">{xen:phrase postings}</a></li>]]></find>
+      <replace><![CDATA[$0
+<xen:if is="{$visitor.permissions.general.viewMemberLikedPosts}">
+<li><a href="{$requestPaths.requestUri}#likedPosts">{xen:phrase liked_posts}</a></li>
+</xen:if>]]></replace>
+    </modification>
+    <modification template="member_view" modification_key="sidaneMemberLikedPostsTabLink" description="Link for liked posts tab" execution_order="10" enabled="1" action="str_replace">
+      <find><![CDATA[<li id="info" class="profileContent">]]></find>
+      <replace><![CDATA[<xen:if is="{$visitor.permissions.general.viewMemberLikedPosts}">
+<li id="likedPosts" class="profileContent" data-loadUrl="{xen:link members/liked-posts, $user}">
+  <span class="jsOnly">{xen:phrase loading}...</span>
+  <noscript><a href="{xen:link members/liked-posts, $user}">{xen:phrase view}</a></noscript>
+</li>
+</xen:if>
+
+$0]]></replace>
+    </modification>
+  </public_template_modifications>
+  <bb_code_media_sites/>
+</addon>
