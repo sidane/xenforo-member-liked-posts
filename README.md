@@ -10,7 +10,7 @@ Install in the usual XenForo way:
 
 * Upload all files in the `upload/` directory to the root of your XenForo installation. 
 
-* Go to your Admin Control Panel -> Add-ons -> Install New Add-on -> Install from uploaded file: Click the Browse button, locate `addon-sidaneMemberLikedPosts.xml` inside and press the `Install Add On` button.
+* Go to your Admin Control Panel -> Add-ons -> Install New Add-on -> Install from uploaded file: Click the Browse button, locate `addon-sidaneMemberLikedPosts.xml` on your computer and press the `Install Add On` button.
 
 A new `View member liked posts` permission controls access to the profile tab, so please update your user group permissions to make the new tab visible to your members.
 
